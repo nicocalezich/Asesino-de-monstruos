@@ -9,6 +9,8 @@ new Vue({
         rangoAtaque: [3, 10],
         rangoAtaqueEspecial: [10, 20],
         rangoAtaqueDelMonstruo: [5, 12],
+        ataqueJugador: 0,
+        ataqueMonstruo: 0
     },
 
     methods: {
@@ -19,6 +21,11 @@ new Vue({
             this.hayUnaPartidaEnJuego = true
         },
         atacar: function () {
+            this.ataqueJugador = this.calcularHeridas(this.rangoAtaque)
+            this.saludMonstruo -=  this.ataqueJugador
+            this.esJugador = true
+            this.registrarEvento({text: "GOLPEASTE AL MONSTRUO POR " + this.ataqueJugador + "%"})
+            console.log(this.turnos)
         },
 
         ataqueEspecial: function () {
@@ -28,15 +35,21 @@ new Vue({
         },
 
         registrarEvento(evento) {
+            this.turnos.unshift(evento)
         },
         terminarPartida: function () {
+            this.hayUnaPartidaEnJuego = false
         },
 
         ataqueDelMonstruo: function () {
+            this.ataqueMonstruo = this.calcularHeridas(this.rangoAtaqueDelMonstruo)
+            this.saludJugador -= this.ataqueMonstruo
+            this.esJugador = false
+            this.registrarEvento("EL MONSTRUO GOLPEA POR " + this.ataqueMonstruo + "%")
         },
 
-        calcularHeridas: function (rango) {
-            return 0
+        calcularHeridas: function (rango) {       
+            return Math.max(Math.floor(Math.random() * rango[1]) + 1, rango[0])
 
         },
         verificarGanador: function () {
