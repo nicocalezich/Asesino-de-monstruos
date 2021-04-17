@@ -16,6 +16,7 @@ new Vue({
             return `${salud}%`
         },
         empezarPartida: function () {
+            this.hayUnaPartidaEnJuego = true
         },
         atacar: function () {
         },
