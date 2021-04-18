@@ -19,6 +19,7 @@ new Vue({
         },
         empezarPartida: function () {
             this.hayUnaPartidaEnJuego = true
+            this.reiniciarValores()
         },
         atacar: function () {
             this.ataqueJugador = this.calcularHeridas(this.rangoAtaque)
@@ -52,6 +53,13 @@ new Vue({
         },
         terminarPartida: function () {
             this.hayUnaPartidaEnJuego = false
+           
+        },
+
+        reiniciarValores: function(){
+            this.saludJugador = 100
+            this.saludMonstruo = 100
+            this.turnos = []
         },
 
         ataqueDelMonstruo: function () {
@@ -68,22 +76,22 @@ new Vue({
         verificarGanador: function () {
             if  (this.saludJugador <= 0){
                 if (confirm("Perdiste! jugar de nuevo?")){
-                    this.saludJugador = 100
-                    this.saludMonstruo = 100
-                    this.empezarPartida
+                    this.reiniciarValores()
+                    this.empezarPartida()
                 }
                 else{
-                    this.terminarPartida
+                    this.reiniciarValores()
+                    this.terminarPartida()
                 }
             }
             if  (this.saludMonstruo <= 0){
                 if (confirm("Ganaste! jugar de nuevo?")){
-                    this.saludJugador = 100
-                    this.saludMonstruo = 100
-                    this.empezarPartida
+                    this.reiniciarValores()
+                    this.empezarPartida()
                 }
                 else{
-                    this.terminarPartida
+                    this.reiniciarValores()
+                    this.terminarPartida()
                 }
             }
             return false;
