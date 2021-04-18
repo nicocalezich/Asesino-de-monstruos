@@ -53,6 +53,7 @@ new Vue({
         },
         terminarPartida: function () {
             this.hayUnaPartidaEnJuego = false
+            this.reiniciarValores()
            
         },
 
@@ -76,21 +77,17 @@ new Vue({
         verificarGanador: function () {
             if  (this.saludJugador <= 0){
                 if (confirm("Perdiste! jugar de nuevo?")){
-                    this.reiniciarValores()
                     this.empezarPartida()
                 }
                 else{
-                    this.reiniciarValores()
                     this.terminarPartida()
                 }
             }
             if  (this.saludMonstruo <= 0){
                 if (confirm("Ganaste! jugar de nuevo?")){
-                    this.reiniciarValores()
                     this.empezarPartida()
                 }
                 else{
-                    this.reiniciarValores()
                     this.terminarPartida()
                 }
             }
