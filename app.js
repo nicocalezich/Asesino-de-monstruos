@@ -24,14 +24,27 @@ new Vue({
             this.ataqueJugador = this.calcularHeridas(this.rangoAtaque)
             this.saludMonstruo -=  this.ataqueJugador
             this.esJugador = true
-            this.registrarEvento({text: "GOLPEASTE AL MONSTRUO POR " + this.ataqueJugador + "%"})
-            console.log(this.turnos)
+            this.registrarEvento({text: "GOLPEASTE AL MONSTRUO POR " + this.ataqueJugador + "%", esJugador: this.esJugador })
+            this.ataqueDelMonstruo()
+            this.verificarGanador()
         },
 
         ataqueEspecial: function () {
+            this.ataqueJugador = this.calcularHeridas(this.rangoAtaqueEspecial)
+            this.saludMonstruo -=  this.ataqueJugador
+            this.esJugador = true
+            this.registrarEvento({text: "GOLPEASTE DURO AL MONSTRUO POR " + this.ataqueJugador + "%", esJugador: this.esJugador })
+            this.ataqueDelMonstruo()
+            this.verificarGanador()
         },
 
         curar: function () {
+            if (this.saludJugador < 90){
+                this.saludJugador += 10
+            }
+            else{
+                this.saludJugador = 100
+            }
         },
 
         registrarEvento(evento) {
@@ -44,8 +57,8 @@ new Vue({
         ataqueDelMonstruo: function () {
             this.ataqueMonstruo = this.calcularHeridas(this.rangoAtaqueDelMonstruo)
             this.saludJugador -= this.ataqueMonstruo
-            this.esJugador = false
-            this.registrarEvento("EL MONSTRUO GOLPEA POR " + this.ataqueMonstruo + "%")
+            this.registrarEvento({text: "EL MONSTRUO GOLPEA POR " + this.ataqueMonstruo + "%", esJugador: !this.esJugador })
+            this.verificarGanador()
         },
 
         calcularHeridas: function (rango) {       
@@ -53,6 +66,26 @@ new Vue({
 
         },
         verificarGanador: function () {
+            if  (this.saludJugador <= 0){
+                if (confirm("Perdiste! jugar de nuevo?")){
+                    this.saludJugador = 100
+                    this.saludMonstruo = 100
+                    this.empezarPartida
+                }
+                else{
+                    this.terminarPartida
+                }
+            }
+            if  (this.saludMonstruo <= 0){
+                if (confirm("Ganaste! jugar de nuevo?")){
+                    this.saludJugador = 100
+                    this.saludMonstruo = 100
+                    this.empezarPartida
+                }
+                else{
+                    this.terminarPartida
+                }
+            }
             return false;
         },
         cssEvento(turno) {
